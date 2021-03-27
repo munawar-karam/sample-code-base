@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Models\Country;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -16,10 +18,8 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
+    protected $guarded = [
+        'id'
     ];
 
     /**
@@ -40,4 +40,32 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public static function create_new_user($request)
+    {
+        $response = null;
+
+        $country = Country::where('iso', $request['country'])->first();
+
+        $user = self::create([
+            'encrypted_id'      =>  generate_unique_encrypted_id(),
+            'first_name'        =>  $request['first_name'],
+            'last_name'         =>  $request['last_name'],
+            'middle_name'       =>  @$request['middle_name'],
+            'email'             =>  $request['email'],
+            'dob'               =>  $request['dob'],
+            'password'          =>  Hash::make($request['password']),
+            'country_id'        =>  @$country['id'],
+            'city'              =>  $request['city'],
+            'address'           =>  $request['address'],
+            'contact_number'    =>  $request['contact_number']
+        ]);
+
+        if($user) {
+            $response = $user;
+        }
+
+        return $response;
+    }
 }
