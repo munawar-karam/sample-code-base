@@ -68,4 +68,19 @@ class User extends Authenticatable
 
         return $response;
     }
+
+    public static function check_credentials($request)
+    {
+        $response = false;
+
+        $user = self::where('email', $request['email'])->first();
+
+        if(!empty($user)) {
+            if(Hash::check($request['password'], $user->password)) {
+               $response = true;
+            }
+        }
+
+        return $response;
+    }
 }
