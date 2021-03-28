@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
-class PasswordResetLinkRequest extends FormRequest
+class UpdateResetPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,15 +26,17 @@ class PasswordResetLinkRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|string|email'
+            'password'  =>  'required|string|min:8|max:128|confirmed',
+            'token'     =>  'bail|required|max:128|exists:password_resets,token'
         ];
     }
+
 
     protected function failedValidation(Validator $validator)
     {
         $key = $validator->errors()->keys()[0];
         $message = $validator->getMessageBag()->first();
 
-        throw new ValidationException($validator, response()->json(['error' => 'true', 'detail' => ['key' => $key, 'message' => $message]],400));
+        throw new ValidationException($validator, response()->json(['error' => 'true', 'detail' => ['key' => $key, 'message' => $message]], 400));
     }
 }

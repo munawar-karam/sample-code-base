@@ -21,7 +21,21 @@ class PasswordReset extends Model
         $password_reset->save();
 
         //send the password reset link email
-        Mail::to($user->email)->send(new \App\Mail\PasswordReset($user));
+        Mail::to($user->email)->send(new \App\Mail\PasswordReset($user, $token));
 
+    }
+
+    public static function update_user_password($user_id, $password, $token)
+    {
+        $response = false;
+
+        $is_updated = User::where('id', $user_id)->update(['password' => $password]);
+
+        if($is_updated) {
+            self::where('token', $token)->update(['is_used' => 'yes']);
+            $response = true;
+        }
+
+        return $response;
     }
 }

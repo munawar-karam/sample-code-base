@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\Models\Country;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Country;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -69,6 +70,7 @@ class User extends Authenticatable
         return $response;
     }
 
+
     public static function check_credentials($request)
     {
         $response = false;
@@ -77,7 +79,7 @@ class User extends Authenticatable
 
         if(!empty($user)) {
             if(Hash::check($request['password'], $user->password)) {
-               $response = true;
+               $response = $user;
             }
         }
 

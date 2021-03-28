@@ -36,6 +36,6 @@ class LoginRequest extends FormRequest
         $key = $validator->errors()->keys()[0];
         $message = $validator->getMessageBag()->first();
 
-        throw new ValidationException($validator, response()->json(['error' => 'true', 'detail' => ['key' => $key, 'message' => $message]]));
+        throw new ValidationException($validator, response()->json(['error' => 'true', 'detail' => ['key' => $key, 'message' => $message]], 400));
     }
 }

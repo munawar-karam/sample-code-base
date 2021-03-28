@@ -11,15 +11,17 @@ class PasswordReset extends Mailable
 {
     use Queueable, SerializesModels;
     private $user;
+    private $token;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $token)
     {
         $this->user = $user;
+        $this->token = $token;
     }
 
     /**
@@ -29,6 +31,7 @@ class PasswordReset extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.PasswordReset')->with(['user'=>$this->user]);
+        $url = env('APP_URL','app.bitcozilla.com').'/api/reset_password/'.$this->token;
+        return $this->view('emails.PasswordReset')->with(['user' => $this->user, 'url' => $url]);
     }
 }

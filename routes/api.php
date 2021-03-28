@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/signup','App\Http\Controllers\SignupController@user_signup');
 Route::post('/login','App\Http\Controllers\LoginController@user_login');
-Route::post('/reset_password','App\Http\Controllers\PasswordResetController@generate_link');
+Route::post('/forget_password','App\Http\Controllers\PasswordResetController@generate_link');
+Route::get('/reset_password/{token}','App\Http\Controllers\PasswordResetController@reset_password');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/logout', 'App\Http\Controllers\LogoutController@user_logout');
+}) ;
+
+
