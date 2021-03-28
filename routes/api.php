@@ -13,14 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/signup','App\Http\Controllers\SignupController@user_signup');
-Route::post('/login','App\Http\Controllers\LoginController@user_login');
-Route::post('/forget_password','App\Http\Controllers\PasswordResetController@generate_link');
-Route::get('/reset_password/{token}','App\Http\Controllers\PasswordResetController@reset_password');
-Route::post('/update_reset_password','App\Http\Controllers\PasswordResetController@update_password');
+Route::post('/signup', 'App\Http\Controllers\SignupController@user_signup');
+Route::post('/login', 'App\Http\Controllers\LoginController@user_login');
+Route::post('/forget_password', 'App\Http\Controllers\PasswordResetController@generate_link');
+Route::get('/reset_password/{token}', 'App\Http\Controllers\PasswordResetController@reset_password');
+Route::post('/update_reset_password', 'App\Http\Controllers\PasswordResetController@update_password');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/logout', 'App\Http\Controllers\LogoutController@user_logout');
-}) ;
+});
 
 

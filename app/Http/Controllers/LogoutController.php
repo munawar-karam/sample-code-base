@@ -13,7 +13,7 @@ class LogoutController extends Controller
 
         $user = Auth::user();
 
-        if($user) {
+        if ($user) {
             $user->currentAccessToken()->delete();
             $response = ['error' => false, 'detail' => ['message' => 'User logged out successfully.']];
         }

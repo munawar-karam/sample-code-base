@@ -12,7 +12,8 @@ class UserInfo extends Model
 
     protected $table = 'user_info';
 
-    public static function save_user_info($ip, $os, $agent, $browser, $desktop, $mobile, $tablet){
+    public static function save_user_info($ip, $os, $agent, $browser, $desktop, $mobile, $tablet)
+    {
         $user_info = new UserInfo();
         $user_info->ip = $ip;
         $user_info->is_desktop = $desktop;

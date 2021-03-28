@@ -15,7 +15,7 @@ class ActivityLogStatusCode extends Model
     {
         $activity_log_status_code = ActivityLogStatusCode::where('status_code', $status_code)->first();
 
-        if(!empty($activity_log_status_code)){
+        if (!empty($activity_log_status_code)) {
 
             return $activity_log_status_code->id;
 

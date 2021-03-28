@@ -13,12 +13,12 @@ class LoginController extends Controller
 
         $check_credentials = User::check_credentials($request->all());
 
-        if($check_credentials != false) {
+        if ($check_credentials != false) {
             $response = [
-                'error'     => false,
-                'detail'    => [
-                    'message'   => 'Logged in successfully',
-                    'token'     => $check_credentials->createToken('login_token')->plainTextToken
+                'error' => false,
+                'detail' => [
+                    'message' => 'Logged in successfully',
+                    'token' => $check_credentials->createToken('login_token')->plainTextToken
                 ]
             ];
         }

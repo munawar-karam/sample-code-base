@@ -31,7 +31,7 @@ class PasswordReset extends Model
 
         $is_updated = User::where('id', $user_id)->update(['password' => $password]);
 
-        if($is_updated) {
+        if ($is_updated) {
             self::where('token', $token)->update(['is_used' => 'yes']);
             $response = true;
         }

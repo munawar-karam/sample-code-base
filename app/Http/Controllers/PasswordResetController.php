@@ -17,7 +17,7 @@ class PasswordResetController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if(!empty($user)) {
+        if (!empty($user)) {
             PasswordReset::generate_reset_link($user);
             save_activity_logs('AP03');
         }
@@ -32,9 +32,9 @@ class PasswordResetController extends Controller
 
         if (isset($request->token) && $request->token != null) {
             $token = PasswordReset::where(['token' => $request->token, 'is_used' => 'no'])->first();
-            if($token) {
-                if( Carbon::parse($token->created_at)->diffInMinutes(Carbon::now()->toDateTimeString()) < 60 ) {
-                    return redirect(env('APP_URL').'/reset_password/'.$request->token);
+            if ($token) {
+                if (Carbon::parse($token->created_at)->diffInMinutes(Carbon::now()->toDateTimeString()) < 60) {
+                    return redirect(env('APP_URL') . '/reset_password/' . $request->token);
                 } else {
                     return response()->json(['error' => true, 'detail' => ['message' => 'Password reset link expired.']]);
                 }
@@ -50,12 +50,12 @@ class PasswordResetController extends Controller
         $response = ['error' => true, 'detail' => ['message' => 'Password reset token expired.']];
 
         $token = PasswordReset::where(['token' => $request->token, 'is_used' => 'no'])->first();
-        if($token) {
-            if( Carbon::parse($token->created_at)->diffInMinutes(Carbon::now()->toDateTimeString()) < 60 ) {
+        if ($token) {
+            if (Carbon::parse($token->created_at)->diffInMinutes(Carbon::now()->toDateTimeString()) < 60) {
                 $user = User::where('id', $token->user_id)->first();
                 $updated = PasswordReset::update_user_password($user->id, $request->password, $token->token);
-                if($updated) {
-                    return  response()->json(['error' => 'false', 'detail' => ['message' => 'Password updated successfully.']]);
+                if ($updated) {
+                    return response()->json(['error' => 'false', 'detail' => ['message' => 'Password updated successfully.']]);
                 }
             }
         }

@@ -3,10 +3,11 @@
 if (!function_exists('generate_unique_encrypted_id')) {
     function generate_unique_encrypted_id()
     {
-        return str_replace(' ','',\Illuminate\Support\Str::random(15).time().\Illuminate\Support\Str::random(15).microtime());
+        return str_replace(' ', '', \Illuminate\Support\Str::random(15) . time() . \Illuminate\Support\Str::random(15) . microtime());
     }
 }
-function save_activity_logs($activity_log_status_code){
+function save_activity_logs($activity_log_status_code)
+{
     $user_agent = new \App\Helpers\UserAgent();
     $ip = $user_agent->IP();
     $os = $user_agent->OS();
