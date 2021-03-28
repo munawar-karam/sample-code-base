@@ -23,5 +23,6 @@ class UserInfo extends Model
         $user_info->is_tablet = $tablet;
         $user_info->user_id = Auth::user() ? Auth::user()->id : null;
         $user_info->save();
+        return $user_info;
     }
 }

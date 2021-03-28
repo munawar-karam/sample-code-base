@@ -13,13 +13,13 @@ class PasswordResetController extends Controller
 {
     public function generate_link(PasswordResetLinkRequest $request)
     {
-        save_agent_history();
         $response = ['error' => false, 'detail' => ['message' => 'Password reset email will be sent if user exists. Please check your email.']];
 
         $user = User::where('email', $request->email)->first();
 
         if(!empty($user)) {
             PasswordReset::generate_reset_link($user);
+            save_activity_logs('AP03');
         }
 
         return response()->json($response);
