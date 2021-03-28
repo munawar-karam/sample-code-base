@@ -33,7 +33,7 @@ class PasswordResetController extends Controller
             $token = PasswordReset::where(['token' => $request->token, 'is_used' => 'no'])->first();
             if($token) {
                 if( Carbon::parse($token->created_at)->diffInMinutes(Carbon::now()->toDateTimeString()) < 60 ) {
-                    return redirect(env('APP_URL').'/reset_password/'.$request->token);
+                    return redirect(env('APP_URL').'/resetpassword/'.$request->token);
                 } else {
                     return response()->json(['error' => true, 'detail' => ['message' => 'Password reset link expired.']]);
                 }
