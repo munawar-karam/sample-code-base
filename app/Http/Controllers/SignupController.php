@@ -16,6 +16,7 @@ class SignupController extends Controller
         if ($user != null) {
             $response['error'] = false;
             $response['detail']['message'] = 'Account created successfully';
+            save_activity_logs('AP01');
         }
 
         return response()->json($response);

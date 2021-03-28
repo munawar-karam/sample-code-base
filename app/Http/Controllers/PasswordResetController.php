@@ -8,6 +8,7 @@ use App\Models\PasswordReset;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PasswordResetController extends Controller
 {
@@ -34,6 +35,7 @@ class PasswordResetController extends Controller
             $token = PasswordReset::where(['token' => $request->token, 'is_used' => 'no'])->first();
             if ($token) {
                 if (Carbon::parse($token->created_at)->diffInMinutes(Carbon::now()->toDateTimeString()) < 60) {
+                    save_activity_logs('AP04');
                     return redirect(env('APP_URL') . '/reset_password/' . $request->token);
                 } else {
                     return response()->json(['error' => true, 'detail' => ['message' => 'Password reset link expired.']]);
@@ -55,6 +57,7 @@ class PasswordResetController extends Controller
                 $user = User::where('id', $token->user_id)->first();
                 $updated = PasswordReset::update_user_password($user->id, $request->password, $token->token);
                 if ($updated) {
+                    save_activity_logs('AP05');
                     return response()->json(['error' => 'false', 'detail' => ['message' => 'Password updated successfully.']]);
                 }
             }

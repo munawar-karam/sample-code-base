@@ -21,6 +21,7 @@ class LoginController extends Controller
                     'token' => $check_credentials->createToken('login_token')->plainTextToken
                 ]
             ];
+            save_activity_logs('AP02');
         }
 
         return response()->json($response);
