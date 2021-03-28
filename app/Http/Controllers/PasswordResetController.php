@@ -8,6 +8,7 @@ use App\Models\PasswordReset;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PasswordResetController extends Controller
 {
@@ -52,7 +53,7 @@ class PasswordResetController extends Controller
         if($token) {
             if( Carbon::parse($token->created_at)->diffInMinutes(Carbon::now()->toDateTimeString()) < 60 ) {
                 $user = User::where('id', $token->user_id)->first();
-                $updated = PasswordReset::update_user_password($user->id, $request->password, $token->token);
+                $updated = PasswordReset::update_user_password($user->id, Hash::make($request->password), $token->token);
                 if($updated) {
                     return  response()->json(['error' => 'false', 'detail' => ['message' => 'Password updated successfully.']]);
                 }
